@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <style>
+
+    #title_style {
+      display: flex;
+      justify-content: center;
+    }
+
+    #title {
+
+      background-color: white;
+
+      max-width: fit-content;
+    }
+
+    #style_header {
+      color: black;
+    }
+
+    #collage_div {
+      height: 100vh;
+      width: 100vw;
+
+      position: relative;
+
+    }
+
+    body {
+      background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet, red);
+      background-size: 1400% 100%; /* Make the gradient wider to create the looping effect */
+      animation: rainbow 100s linear infinite; /* Use the 'rainbow' animation for a 10s duration, linear timing, and infinite loop */
+    }
+
+    @keyframes rainbow {
+      0% { background-position: 0 0; } /* Start the gradient at the left */
+      100% { background-position: 1400% 0; } /* End the gradient at the right after a full loop */
+    }
+
+  </style>
+
+</head>
+<body>
+
+<div id="title_style">
+  <h1 id="title"> <u>Welcome to Your Collage</u> </h1>
+</div>
+
+
+<div id="collage_div">
+
+</div>
+
+
+</body>
+
+<script src="makeCollage.js"></script>
+
+</html>
