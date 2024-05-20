@@ -3,6 +3,9 @@
  * elements on a page and stores them to the brower's storage API.
  */
 
+/* Imports */
+// import { cssStyleDeclarationToObject } from "./utils.js";
+
 /* Get the element! */
 captureAndStoreHTMLDiv();
 
@@ -21,8 +24,8 @@ function captureAndStoreHTMLDiv() {
   /**
    * If the div is too small or set to hidden don't save it
    */
-  if (selectedDiv.clientWidth < 5 ||
-    selectedDiv.clientHeight < 5 || 
+  if (selectedDiv.clientWidth < 20 ||
+    selectedDiv.clientHeight < 20 || 
     !selectedDiv.checkVisibility()) {
       return;
   }
@@ -45,16 +48,15 @@ function captureAndStoreHTMLDiv() {
 
   /* Add the object to storage */
   browser.storage.local.set(htmlObject);
+}
 
-  /* helper function to store the CSS property b/c CSSStyleDec can't be stored */
-  /* This function was given by ChatGPT */
-  function cssStyleDeclarationToObject(styleDeclaration) {
-    const styleObject = {};
-    for (let i = 0; i < styleDeclaration.length; i++) {
-      const propertyName = styleDeclaration[i];
-      const propertyValue = styleDeclaration.getPropertyValue(propertyName);
-      styleObject[propertyName] = propertyValue;
-    }
-    return styleObject;
+/* Helper Functions */
+function cssStyleDeclarationToObject(styleDeclaration) {
+  const styleObject = {};
+  for (let i = 0; i < styleDeclaration.length; i++) {
+    const propertyName = styleDeclaration[i];
+    const propertyValue = styleDeclaration.getPropertyValue(propertyName);
+    styleObject[propertyName] = propertyValue;
   }
+  return styleObject;
 }

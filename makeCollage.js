@@ -2,6 +2,9 @@
  * This file deals with constructing the collage page.
  */
 
+/* Imports */
+// import { objectToCSS } from "./utils.js";
+
 /* Call the function to make the collage */
 makeCollage();
 
@@ -17,7 +20,8 @@ async function makeCollage() {
   // get the storage object
   const storage = await browser.storage.local.get();
 
-  const collageDiv = document.getElementById('collage_div');
+  const posList = [];
+  generateRandomAreaOrder(posList);
 
   for (const key in storage) {
     const item = storage[key];
@@ -36,24 +40,28 @@ async function makeCollage() {
  */
 function generateRandomItem(element, style, url) {
 
-  function objectToCSS(styleObject, targetElement) {
-
-    for (const key in styleObject) {
-
-      targetElement.style[key] = styleObject[key];
-
-    }
-
-  }
-
+  /* Get the collage dive, create the container div */
+  /* Also append the container div to the collage div */
   const collageDiv = document.getElementById('collage_div');
-
   const containerDiv = document.createElement('div');
-
   collageDiv.appendChild(containerDiv);
 
-  const dataDiv = document.createElement('div');
+  /* style the container Div */
+  styleContainerDiv(containerDiv, collageDiv, url);
 
+  /* Create, style, append the data div */
+  const dataDiv = document.createElement('div');
+  styleDataDiv(element, style, dataDiv);
+  containerDiv.appendChild(dataDiv);
+
+  return containerDiv;
+}
+
+/**
+ * generateRandomItem Helper Functions
+ */
+
+function styleDataDiv(element, style, dataDiv) {
   dataDiv.innerHTML = element;
 
   objectToCSS(style, dataDiv);
@@ -70,8 +78,15 @@ function generateRandomItem(element, style, url) {
     dataDiv.style[key] = elementStyling[key];
 
   }
+}
 
-  containerDiv.appendChild(dataDiv);
+/**
+ * 
+ * @param {*} containerDiv 
+ * @param {*} collageDiv 
+ * @param {*} url 
+ */
+function styleContainerDiv(containerDiv, collageDiv, url) {
 
   const allowedWidth = collageDiv.clientWidth - 250;
   const allowedHeight = collageDiv.clientHeight - 250;
@@ -98,26 +113,85 @@ function generateRandomItem(element, style, url) {
 
   }
 
-  const linkToHomePage = document.createElement('a');
-  linkToHomePage.textContent = "Origin";
-  linkToHomePage.href = url;
-
-  linkToHomePage.style['textAlign'] = 'center';
-
-  containerDiv.append(linkToHomePage);
-
   containerDiv.addEventListener('click', function () {
 
-
-    // document.open(url);
     browser.tabs.create({ url: url });
 
   });
 
-  return containerDiv;
+  const exitDiv = document.createElement('div');
+
+  const exitStyling = {
+    "background-color": "red",
+    // left: (containerDiv.offsetWidth - 15) + 'px',
+    // bottom: (containerDiv.offsetHeight - 15) + 'px',
+    right: "100%",
+    top: "1px",
+    width: "14px",
+    height: "14px",
+    position: "sticky",
+    border: "1px black"
+  }
+
+  for (const key in exitStyling) {
+
+    exitDiv.style[key] = exitStyling[key];
+
+  }
+
+  exitDiv.addEventListener("click", function removeFromCollage() {
+
+    // containerDiv.style['visibility'] = 'hidden';
+    collageDiv.removeChild( containerDiv );
+    event.stopPropagation();
+
+  });
+
+  containerDiv.append(exitDiv);
+
+}
+
+function positionDivElementOnPage(posList, div) {
+
+
+
+}
+
+
+/* Other Helpers */
+/**
+ * 
+ * @param {*} styleObject 
+ * @param {*} targetElement 
+ */
+function objectToCSS(styleObject, targetElement) {
+
+  for (const key in styleObject) {
+
+    targetElement.style[key] = styleObject[key];
+
+  }
+
 }
 
 /**
- * Generate Random Item Helper Functions
+ * 
+ * @param {*} list 
+ * @returns 
+ * 
+ * Function adapted from ChatGPT
  */
+function generateRandomAreaOrder(list) {
 
+  list = [];
+
+  for (let i = 0; i<10; i++) {
+    list.push(i);
+  }
+
+  for (let i = list.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [list[i], list[j]] = [list[j], list[i]]; // Swap elements
+  }
+  return list;
+}
