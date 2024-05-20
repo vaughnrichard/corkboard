@@ -1,14 +1,13 @@
 /**
- * 
+ * This file deals with constructing the collage page.
  */
 
+/* Call the function to make the collage */
 makeCollage();
 
 /* Constants */
-
 const iframeWidth = 200;
 const iframeHeight = 250;
-
 /* End constants */
 
 /**
@@ -18,67 +17,23 @@ async function makeCollage() {
   // get the storage object
   const storage = await browser.storage.local.get();
 
-
-  let blocked_urls = 0;
+  const collageDiv = document.getElementById('collage_div');
 
   for (const key in storage) {
     const item = storage[key];
-
-    // console.log(storage[key]);
-
-    // try {
-    //   generateRandomIframe(url);
-    // } catch (err) {
-    //   blocked_urls += 1;
-    // }
-    generateRandomItem(item["element"], item["style"], item["url"]);
+    const newDiv = generateRandomItem(item["element"], item["style"], item["url"]);
+    // newDiv.appendChild(containerDiv);
   }
-
-  console.log( String(blocked_urls) + " blocked urls." );
 }
-
-
 
 
 /**
- * 
+ * This function creates a div and styles it for a random item from the stored
+ * elements. It returns the div that was placed on the page.
+ * @param {HTMLElement} element 
+ * @param {Object} style 
+ * @param {string} url 
  */
-function generateRandomIframe(url) {
-  const collageDiv = document.getElementById('collage_div');
-
-  const allowedWidth = collageDiv.clientWidth - iframeWidth;
-  const allowedHeight = collageDiv.clientHeight - iframeHeight;
-
-  console.log("a&a", allowedHeight, allowedWidth);
-
-
-  const left = Math.random() * allowedWidth;
-  const top = Math.random() * allowedHeight;
-
-  console.log("left, top", left, top);
-
-  const newIframe = document.createElement('iframe');
-
-  newIframe.setAttribute("src", url)
-;
-  const iframeStyling = {
-    position: "absolute",
-    left: String(left)+'px',
-    top: String(top)+'px',
-    width: String(iframeWidth)+'px',
-    height: String(iframeHeight)+'px'
-  }
-
-  for (const key in iframeStyling) {
-
-    newIframe.style[key] = iframeStyling[key];
-
-  }
-
-  collageDiv.appendChild(newIframe);
-
-}
-
 function generateRandomItem(element, style, url) {
 
   function objectToCSS(styleObject, targetElement) {
@@ -121,8 +76,6 @@ function generateRandomItem(element, style, url) {
   const allowedWidth = collageDiv.clientWidth - 250;
   const allowedHeight = collageDiv.clientHeight - 250;
 
-  // console.log("aw ah", containerDiv.clientWidth, containerDiv.clientHeight);
-
   const left = Math.random() * allowedWidth;
   const top = Math.random() * allowedHeight;
 
@@ -152,4 +105,19 @@ function generateRandomItem(element, style, url) {
   linkToHomePage.style['textAlign'] = 'center';
 
   containerDiv.append(linkToHomePage);
+
+  containerDiv.addEventListener('click', function () {
+
+
+    // document.open(url);
+    browser.tabs.create({ url: url });
+
+  });
+
+  return containerDiv;
 }
+
+/**
+ * Generate Random Item Helper Functions
+ */
+

@@ -7,6 +7,8 @@
 /**
  * Add a listener to listen for new messages, and once a open page message is
  * sent in open collage.html.
+ * 
+ * This function was adapted from ChatGPT responses
  */
 browser.runtime.onMessage.addListener((message) => {
   if (message && message.openNewPage) {
