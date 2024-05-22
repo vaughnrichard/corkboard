@@ -20,13 +20,18 @@ async function makeCollage() {
   // get the storage object
   const storage = await browser.storage.local.get();
 
-  const posList = [];
-  generateRandomAreaOrder(posList);
+  let posList = [];
+  posList = generateRandomAreaOrder();
 
   for (const key in storage) {
     const item = storage[key];
     const newDiv = generateRandomItem(item["element"], item["style"], item["url"]);
     // newDiv.appendChild(containerDiv);
+    positionDivElementOnPage(posList, newDiv);
+
+    if (posList.length == 0) {
+      posList = generateRandomAreaOrder();
+    }
   }
 }
 
@@ -40,11 +45,23 @@ async function makeCollage() {
  */
 function generateRandomItem(element, style, url) {
 
-  /* Get the collage dive, create the container div */
-  /* Also append the container div to the collage div */
+  /**
+   * The collage div is the div the elements are pasted onto.
+   * 
+   * The container div is the over arching div that contains the element
+   * div as well as the close box at the top left. This was done for easier
+   * styling.
+   * 
+   * The element div contains the actual content from the visited web page.
+   */
   const collageDiv = document.getElementById('collage_div');
   const containerDiv = document.createElement('div');
+  const elementDiv = document.createElement('div');
   collageDiv.appendChild(containerDiv);
+  containerDiv.appendChild(elementDiv)
+
+  /* Styling needed so the user can scroll through the content div */
+  elementDiv.style['overflow'] = 'auto';
 
   /* style the container Div */
   styleContainerDiv(containerDiv, collageDiv, url);
@@ -52,7 +69,7 @@ function generateRandomItem(element, style, url) {
   /* Create, style, append the data div */
   const dataDiv = document.createElement('div');
   styleDataDiv(element, style, dataDiv);
-  containerDiv.appendChild(dataDiv);
+  elementDiv.appendChild(dataDiv);
 
   return containerDiv;
 }
@@ -103,7 +120,7 @@ function styleContainerDiv(containerDiv, collageDiv, url) {
     "max-width": '250px',
     "max-height": '250px',
     border: "solid 1px black",
-    overflow: "auto",
+    overflow: "hidden",
     "background-color": "white"
   };
 
@@ -123,14 +140,12 @@ function styleContainerDiv(containerDiv, collageDiv, url) {
 
   const exitStyling = {
     "background-color": "red",
-    // left: (containerDiv.offsetWidth - 15) + 'px',
-    // bottom: (containerDiv.offsetHeight - 15) + 'px',
-    right: "100%",
-    top: "1px",
+    right: "0px",
+    top: "0px",
     width: "14px",
     height: "14px",
-    position: "sticky",
-    border: "1px black"
+    position: "absolute",
+    border: "1px solid black"
   }
 
   for (const key in exitStyling) {
@@ -153,6 +168,57 @@ function styleContainerDiv(containerDiv, collageDiv, url) {
 
 function positionDivElementOnPage(posList, div) {
 
+
+  const currentPos = posList.pop();
+
+  const top_adjust = Math.floor( currentPos / 5);
+  const left_adjust = currentPos % 5;
+
+  /* find the center of the selected box, in pixels */
+  const center_pos = [
+    ( 25 + (top_adjust * 50) ),
+    ( 10 + (left_adjust * 20) ),
+  ];
+
+  /* Add some randomness to the positioning */
+  center_pos[0] += (Math.random() * 25 - 12.5);
+  center_pos[1] += (Math.random() * 10 - 5);
+
+  /* convert to pixels from viewport */
+  center_pos[0] *= (window.innerHeight / 100);
+  center_pos[1] *= (window.innerWidth / 100);
+
+
+  /* set the center of the box to this position */
+  const rect = div.getBoundingClientRect();
+
+
+  const width = rect.width;
+  const height = rect.height;
+
+  const collageRect = document.getElementById('collage_div').getBoundingClientRect();
+  const collageTop = collageRect.top;
+
+  // center_pos[0] -= (height / 2) + collageTop;
+  // center_pos[1] -= (width / 2);
+
+  const style_pos = [
+    center_pos[0] - (height / 2) + collageTop,
+    center_pos[1] - (width / 2)
+  ];
+
+  if ( style_pos[0] < collageTop)  { style_pos[0] = collageTop };
+  if (style_pos[0] + height > window.innerHeight) {
+    style_pos[0] -= (style_pos[0] + height - window.innerHeight);
+  }
+
+  if ( style_pos[1] < 0)  { style_pos[1] = 0 };
+  if (style_pos[1] + width > window.innerWidth) {
+    style_pos[1] -= (style_pos[1] + width - window.innerWidth);
+  }
+
+  div.style['top'] = style_pos[0] + 'px';
+  div.style['left'] = style_pos[1] + 'px';
 
 
 }
@@ -181,7 +247,7 @@ function objectToCSS(styleObject, targetElement) {
  * 
  * Function adapted from ChatGPT
  */
-function generateRandomAreaOrder(list) {
+function generateRandomAreaOrder() {
 
   list = [];
 
