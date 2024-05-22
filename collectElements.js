@@ -26,7 +26,8 @@ function captureAndStoreHTMLDiv() {
    */
   if (selectedDiv.clientWidth < 20 ||
     selectedDiv.clientHeight < 20 || 
-    !selectedDiv.checkVisibility()) {
+    !selectedDiv.checkVisibility() ||
+    selectedDiv.clientWidth * selectedDiv.clientHeight < 2000) {
       return;
   }
 

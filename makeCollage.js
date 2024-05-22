@@ -196,18 +196,17 @@ function positionDivElementOnPage(posList, div) {
   const width = rect.width;
   const height = rect.height;
 
-  const collageRect = document.getElementById('collage_div').getBoundingClientRect();
-  const collageTop = collageRect.top;
+  // const title_rect = document.getElementById('title_style').getBoundingClientRect();
+  // const collageTop = title_rect.height;
 
-  // center_pos[0] -= (height / 2) + collageTop;
-  // center_pos[1] -= (width / 2);
+  // console.log(title_rect);
 
   const style_pos = [
-    center_pos[0] - (height / 2) + collageTop,
+    center_pos[0] - (height / 2), //+ collageTop,
     center_pos[1] - (width / 2)
   ];
 
-  if ( style_pos[0] < collageTop)  { style_pos[0] = collageTop };
+  if ( style_pos[0] < 0)  { style_pos[0] = 0 };
   if (style_pos[0] + height > window.innerHeight) {
     style_pos[0] -= (style_pos[0] + height - window.innerHeight);
   }
