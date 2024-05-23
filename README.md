@@ -1,9 +1,9 @@
-# corkboard
+# Corkboard
 
 ## About
 This web extension seeks to capture a user's history in an artistic way. When
 enabled, this extension will save an element from each page. Then, when prompted,
-a webpage containing a collage of elements from each page will be genereated.
+a webpage containing a collage of elements from each page will be generated.
 
 This extension works by using the browser storage API to store data associated
 with each link visited. It captures the following data from each page:
@@ -26,8 +26,13 @@ your saved data, removing any potentially unwanted information stored.
 1. Install
 
 Installation can be done by downloading the files and then loading them
-through the temporary extensions feature (go to about:debugging#/runtime/this-firefox).
+through the temporary extensions feature (go to
+[about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox)).
 This project is only guaranteed to work on Firefox (version >=126.0) at this moment.
+
+Once you have navigated to the above link, simply click the "Load Temporary Add-on"
+button and navigate to where you directory you downloaded the files to. Then just
+select `manifest.json` and it will load the extension!
 
 2. Visit Pages
 
