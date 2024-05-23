@@ -24,25 +24,31 @@ your saved data, removing any potentially unwanted information stored.
 
 ## How to Use
 1. Install
-  Installation can be done by downloading the files and then loading them
-  through the temporary extensions feature (go to about:debugging#/runtime/this-firefox).
-  This project is only guaranteed to work on Firefox (version >=126.0) at this moment.
+
+- Installation can be done by downloading the files and then loading them
+through the temporary extensions feature (go to about:debugging#/runtime/this-firefox).
+This project is only guaranteed to work on Firefox (version >=126.0) at this moment.
 
 2. Visit Pages
-  As you visit pages, this extension will collect elements in the background.
+
+- As you visit pages, this extension will collect elements in the background.
 
 3. View Collage
-  When you want to view the collage all you have to do is navigate to the
-  extension pop-up and select the "View Collage" button. This will bring
-  you to a new HTML page and generate the collage on it. The pop-up can
-  be found on the extensions tab on the tool bar (the puzzle piece next to the
-  profile button on the Firefox browser). Clicking this will display the
-  `Corkboard` extension - clicking this yields the pop-up.
 
-  While viewing the collage, the windows may be temporarily hidden by clicking
-  the red boxed in the top right of their boxes.
+- When you want to view the collage all you have to do is navigate to the
+extension pop-up and select the "View Collage" button. This will bring
+you to a new HTML page and generate the collage on it. The pop-up can
+be found on the extensions tab on the tool bar (the puzzle piece next to the
+profile button on the Firefox browser). Clicking this will display the
+`Corkboard` extension - clicking this yields the pop-up.
+
+- While viewing the collage, the windows may be temporarily hidden by clicking
+the red boxed in the top right of their boxes.
+
+- Any box may be clicked in order to go to the website the image was source from.
 
 4. Clear Elements
-  When your collage is getting too cluttered, there's an element you do not
-  want, or you just want a fresh start you may clear the collage. This can
-  be done by accessing the pop-up and selecting the "Clear Elements" button.
+
+- When your collage is getting too cluttered, there's an element you do not
+want, or you just want a fresh start you may clear the collage. This can
+be done by accessing the pop-up and selecting the "Clear Elements" button.
